@@ -29,7 +29,9 @@ class ProductController extends Controller
     public function store(StoreProductRequest $request)
     {
         $product = $request->user()->products()->create($request->validated());
-        return redirect(route('products.index', absolute: false));
+        return redirect()
+            ->route('products.index')
+            ->with('message', 'Product has been created successfully.');
     }
 
     public function show(Product $product)
@@ -50,12 +52,16 @@ class ProductController extends Controller
     public function update(UpdateProductRequest $request, Product $product)
     {
         $product->update($request->validated());
-        return redirect(route('products.index', absolute: false));
+        return redirect()
+            ->route('products.index')
+            ->with('message', 'Product has been updated successfully.');
     }
 
     public function destroy(Product $product)
     {
         $product->delete();
-        return redirect(route('products.index', absolute: false));
+        return redirect()
+            ->route('products.index')
+            ->with('message', 'Product has been deleted successfully.');
     }
 }
