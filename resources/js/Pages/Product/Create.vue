@@ -36,7 +36,7 @@ const store = () => {
             </div>
         </template>
 
-        <div class="py-12">
+        <div class="py-4 pb-6">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="flex items-center justify-center">
                     <div class="relative w-full max-w-2xl max-h-full">
