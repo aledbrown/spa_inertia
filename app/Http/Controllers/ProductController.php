@@ -28,7 +28,7 @@ class ProductController extends Controller
 
     public function store(StoreProductRequest $request)
     {
-        $product = $request->user()->products()->create($request->all());
+        $product = $request->user()->products()->create($request->validated());
         return redirect(route('products.index', absolute: false));
     }
 
@@ -41,12 +41,16 @@ class ProductController extends Controller
 
     public function edit(Product $product)
     {
-        //
+        return inertia('Product/Edit', [
+            'product' => ProductResource::make($product),
+            'categories' => CategoryResource::collection(Category::orderBy('name')->get()),
+        ]);
     }
 
     public function update(UpdateProductRequest $request, Product $product)
     {
-        //
+        $product->update($request->validated());
+        return redirect(route('products.index', absolute: false));
     }
 
     public function destroy(Product $product)
