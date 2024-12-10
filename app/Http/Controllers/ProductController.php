@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
+use App\Http\Resources\CategoryResource;
 use App\Http\Resources\ProductResource;
+use App\Models\Category;
 use App\Models\Product;
 
 class ProductController extends Controller
@@ -19,12 +21,15 @@ class ProductController extends Controller
 
     public function create()
     {
-        //
+        return inertia('Product/Create', [
+            'categories' => CategoryResource::collection(Category::orderBy('name')->get()),
+        ]);
     }
 
     public function store(StoreProductRequest $request)
     {
-        //
+        $product = auth()->user()->products()->create($request->all());
+        return redirect(route('product.index', absolute: false));
     }
 
     public function show(Product $product)
