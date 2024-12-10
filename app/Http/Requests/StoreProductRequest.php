@@ -31,6 +31,7 @@ class StoreProductRequest extends FormRequest
         ];
     }
 
+    // This modified the Error message for category_id
     public function attributes()
     {
         return [
@@ -38,11 +39,11 @@ class StoreProductRequest extends FormRequest
         ];
     }
 
-    public function prepareForValidation()
-    {
-        $this->merge([
-            'price' => $this->price * 100
-        ]);
-    }
+    // public function prepareForValidation()
+    // {
+    //     $this->merge([
+    //         'price' => $this->price * 100
+    //     ]);
+    // }
 
 }
