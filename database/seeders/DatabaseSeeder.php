@@ -16,22 +16,23 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
 
-        // User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
-
-        $categories = Category::factory(10)->create();
+        $categories = Category::factory(5)->create();
 
         User::factory(5)
             ->has(
-                Product::factory(10)->state(function () use ($categories) {
+                Product::factory(25)->state(function () use ($categories) {
                     return [
                         'category_id' => $categories->random()->id
                     ];
                 })
             )
             ->create();
+
+        // update user with ID one
+        User::find(1)->update([
+            'name' => 'Sammy Brown',
+            'email' => 'aled@example.com',
+        ]);
 
     }
 }
