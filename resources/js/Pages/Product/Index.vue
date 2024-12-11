@@ -9,7 +9,7 @@ import CheckAll from "@/Components/CheckAll.vue";
 import BulkEdit from "@/Pages/Product/BulkEdit.vue";
 
 const selectedIds = ref([]);
-console.log(selectedIds)
+const showModal = ref(false);
 
 const deleteRow = (id) => {
     if (confirm('Are you sure you want to delete this product?')) {
@@ -74,7 +74,7 @@ const handleSearch = (event) => {
                                 class="px-3 py-2.5 text-sm font-medium text-center text-white rounded-md"
                                 :class="{ 'bg-cyan-300 cursor-not-allowed': !selectedIds.length, 'bg-cyan-500': selectedIds.length }"
                                 :disabled="!selectedIds.length"
-                                @click="deleteSelected"
+                                @click="showModal = true"
                         >
                             Edit Selected</button>
                     </div>
@@ -128,6 +128,6 @@ const handleSearch = (event) => {
                 </div>
             </div>
         </div>
-        <BulkEdit :show="true" />
+        <BulkEdit :show="showModal" @close="showModal = false" />
     </AuthenticatedLayout>
 </template>
