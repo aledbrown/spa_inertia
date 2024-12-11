@@ -2,6 +2,7 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, Link, router } from '@inertiajs/vue3';
 import Pagination from "@/Components/Pagination.vue";
+import Sortable from "@/Components/Sortable.vue";
 
 const deleteRow = (id) => {
     if (confirm('Are you sure you want to delete this product?')) {
@@ -56,10 +57,10 @@ const handleSearch = (event) => {
                     <table class="w-full text-sm text-left rtl:text-right text-gray-500">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50 border-b">
                         <tr>
-                            <th scope="col" class="px-6 py-3">Product name</th>
+                            <th scope="col" class="px-6 py-3"><Sortable label="Product name" name="name"/></th>
                             <th scope="col" class="px-6 py-3">Category</th>
-                            <th scope="col" class="px-6 py-3">Price</th>
-                            <th scope="col" class="px-6 py-3">Weight</th>
+                            <th scope="col" class="px-6 py-3"><Sortable label="Price" name="price"/></th>
+                            <th scope="col" class="px-6 py-3"><Sortable label="Weight" name="weight"/></th>
                             <th scope="col" class="px-6 py-3">Action</th>
                         </tr>
                         </thead>
