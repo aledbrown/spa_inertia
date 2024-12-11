@@ -3,11 +3,26 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, Link, router } from '@inertiajs/vue3';
 import Pagination from "@/Components/Pagination.vue";
 import Sortable from "@/Components/Sortable.vue";
+import Checkbox from "@/Components/Checkbox.vue";
+import {ref} from "vue";
+import CheckAll from "@/Components/CheckAll.vue";
+
+const selectedIds = ref([]);
+console.log(selectedIds)
 
 const deleteRow = (id) => {
     if (confirm('Are you sure you want to delete this product?')) {
         router.delete(route('products.destroy', id), {
             preserveScroll: true
+        })
+    }
+}
+
+const deleteSelected = () => {
+    if (window.confirm('Are you sure you want to delete selected products?')) {
+        router.delete(route('products.bulk-destroy', selectedIds.value.join(',')), {
+            preserveScroll: true,
+            onSuccess: () => selectedIds.value = []
         })
     }
 }
@@ -45,7 +60,14 @@ const handleSearch = (event) => {
         </template>
         <div class="py-4 pb-6">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="flex flex-column sm:flex-row flex-wrap space-y-4 sm:space-y-0 items-center justify-end pb-6">
+                <div class="flex flex-column sm:flex-row flex-wrap space-y-4 sm:space-y-0 items-center justify-between pb-6">
+                    <button type="button"
+                            class="px-3 py-2.5 text-sm font-medium text-center text-white rounded-md"
+                            :class="{ 'bg-red-300 cursor-not-allowed': !selectedIds.length, 'bg-red-500': selectedIds.length }"
+                            :disabled="!selectedIds.length"
+                            @click="deleteSelected"
+                    >
+                        Delete Selected</button>
                     <div class="relative">
                         <div class="absolute inset-y-0 left-0 rtl:inset-r-0 rtl:right-0 flex items-center ps-3 pointer-events-none">
                             <svg class="w-5 h-5 text-gray-500" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
@@ -57,6 +79,9 @@ const handleSearch = (event) => {
                     <table class="w-full text-sm text-left rtl:text-right text-gray-500">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50 border-b">
                         <tr>
+                            <th scope="col" class="px-6 py-3">
+                                <CheckAll :rows="products.data" v-model="selectedIds"/>
+                            </th>
                             <th scope="col" class="px-6 py-3"><Sortable label="Product name" name="name"/></th>
                             <th scope="col" class="px-6 py-3">Category</th>
                             <th scope="col" class="px-6 py-3"><Sortable label="Price" name="price"/></th>
@@ -66,9 +91,12 @@ const handleSearch = (event) => {
                         </thead>
                         <tbody>
                         <tr v-for="product in products.data" :key="product.id" class="bg-white border-b hover:bg-gray-50">
-                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                            <td class="px-6 py-4">
+                                <Checkbox :value="product.id" v-model:checked="selectedIds" />
+                            </td>
+                            <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                                 {{ product.name }}
-                            </th>
+                            </td>
                             <td class="px-6 py-4">
                                 {{ product.category.name }}
                             </td>

@@ -9,6 +9,7 @@ use Inertia\Inertia;
 
 Route::middleware('auth')->group(function () {
     Route::resource('/products', ProductController::class);
+    Route::delete('/products/{ids}/bulk', [ProductController::class, 'bulkDestroy'])->name('products.bulk-destroy');
 });
 
 
