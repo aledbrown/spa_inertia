@@ -81,6 +81,15 @@ class ProductController extends Controller
             ->with('message', 'Product has been updated successfully.');
     }
 
+    public function bulkUpdate(BulkUpdateProductRequest $request)
+    {
+        dd($request->validated());
+
+        return redirect()
+            ->route('products.index')
+            ->with('message', 'Selected products updated successfully.');
+    }
+
     public function destroy(Product $product)
     {
         $product->delete();
