@@ -39,6 +39,7 @@ class ProductController extends Controller
         return inertia('Product/Index', [
             'products' => ProductResource::collection($products),
             'query' => (object) request()->query(),
+            'categories' => CategoryResource::collection(Category::orderBy('name')->get()),
         ]);
     }
 
