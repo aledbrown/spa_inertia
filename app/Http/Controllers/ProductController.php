@@ -83,7 +83,9 @@ class ProductController extends Controller
 
     public function bulkUpdate(BulkUpdateProductRequest $request)
     {
-        dd($request->validated());
+        Product::whereIn('id', $request->product_ids)->update([
+            'category_id' => $request->category_id,
+        ]);
 
         return redirect()
             ->route('products.index')
